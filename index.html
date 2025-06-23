@@ -310,6 +310,118 @@
             color: var(--text-secondary);
         }
         
+        /* Mission Section Styles */
+        .mission-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, transparent 0%, var(--bg-secondary) 50%, transparent 100%);
+            position: relative;
+        }
+        
+        .mission-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .mission-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .mission-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        
+        .mission-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .mission-content strong {
+            color: var(--text-primary);
+        }
+        
+        .mission-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0 2rem;
+        }
+        
+        .mission-list li {
+            position: relative;
+            padding-left: 0;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .mission-list li:before {
+            display: none;
+        }
+        
+        .mission-highlight {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            margin: 3rem 0;
+            padding: 1.5rem;
+            border-left: 3px solid var(--primary-blue);
+            background: rgba(0, 98, 255, 0.05);
+        }
+        
+        .skepticism-note {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+        
+        .skepticism-note p {
+            margin-bottom: 1rem;
+        }
+        
+        .skepticism-note p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .skepticism-note em {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .skepticism-note strong {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        #betaDays {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+        
+        @media (max-width: 768px) {
+            .mission-title {
+                font-size: 2rem;
+            }
+            
+            .mission-content {
+                font-size: 1rem;
+            }
+            
+            .mission-highlight {
+                font-size: 1.125rem;
+                padding: 1rem;
+            }
+        }
+        
         /* Footer */
         footer {
             text-align: center;
@@ -522,13 +634,52 @@
                         <p class="feature-desc">From idea to live URL without manual intervention</p>
                     </div>
                 </div>
+                
+                <!-- Our Mission Section -->
+                <section class="mission-section">
+                    <div class="mission-container">
+                        <h2 class="mission-title">Our Mission</h2>
+                        
+                        <div class="mission-content">
+                            <p>We're building for a world where brilliant ideas die in backlogs, where months of development could be minutes, and where the gap between vision and reality is unnecessarily wide.</p>
+                            
+                            <p>DevMatrix exists because we believe software creation is broken. Not because developers lack skill, but because the process forces them to be architects, security experts, DevOps engineers, and database administrators—when they should be problem solvers.</p>
+                            
+                            <p><strong>We envision a future where:</strong></p>
+                            <ul class="mission-list">
+                                <li>• Domain experts can build domain solutions without middlemen</li>
+                                <li>• Every line of generated code is yours—no vendor lock-in, no subscriptions</li>
+                                <li>• Months of setup become minutes of configuration</li>
+                                <li>• The best practices are built-in, not bolted on later</li>
+                            </ul>
+                            
+                            <p>Our platform doesn't just generate code—it understands intent, anticipates needs, and delivers complete, production-ready applications. From professional specifications to deployed software, with you maintaining complete ownership.</p>
+                            
+                            <p>We're not here to replace developers. We're here to amplify human creativity by removing the barriers between ideas and implementation. Because the next breakthrough shouldn't wait for the next sprint.</p>
+                            
+                            <p class="mission-highlight">The future of software isn't about writing more code—it's about shipping more value.</p>
+                            
+                            <div class="skepticism-note">
+                                <p><em>We know this sounds too good to be true. We've all seen "revolutionary" tools that overpromise and underdeliver. That's why we're not asking for your faith—we're asking for your patience.</em></p>
+                                <p><strong>In <span id="betaDays">46</span> days, we'll show you exactly what we mean. No marketing fluff. No cherry-picked demos. Just real developers building real applications in real-time.</strong></p>
+                                <p>Until then, join the waitlist and be part of the 50 developers who will witness the future first.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </main>
     
     <footer>
         <div class="container">
-            <p class="footer-text">© 2025 DevMatrix. All rights reserved.</p>
+            <p class="footer-text">
+                © 2025 DevMatrix. All rights reserved.<br>
+                <span style="font-size: 0.8rem; margin-top: 0.5rem; display: inline-block;">
+                    Created by Ariel E. Ghysels • 
+                    <a href="mailto:aeg@devmatrix.dev" style="color: #0062ff; text-decoration: none;">aeg@devmatrix.dev</a>
+                </span>
+            </p>
         </div>
     </footer>
     
@@ -549,6 +700,9 @@
                 document.getElementById('hours').textContent = String(hours).padStart(2, '0');
                 document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
                 document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                
+                // Update days in mission section
+                document.getElementById('betaDays').textContent = days;
             } else {
                 document.getElementById('countdown').innerHTML = '<div class="countdown-number">🚀 Beta is Live!</div>';
             }
