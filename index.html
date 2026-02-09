@@ -3,749 +3,492 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevMatrix - Deterministic Spec-to-System Compiler for Software Systems</title>
-    <meta name="description" content="DevMatrix is a compiler layer for software engineering. Deterministic compilation of specifications into production-grade systems.">
+    <title>DevMatrix</title>
+    <meta name="description" content="Model-agnostic infrastructure for deterministic, verifiable, and auditable AI-generated systems.">
 
-    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/devmatrix-logo.svg">
 
-    <!-- OG Tags -->
-    <meta property="og:title" content="DevMatrix - Deterministic Spec-to-System Compiler for Software Systems">
-    <meta property="og:description" content="Deterministic compilation of specifications into production-grade systems.">
-    <meta property="og:image" content="/og-image.png">
+    <meta property="og:title" content="DevMatrix">
+    <meta property="og:description" content="Model-agnostic infrastructure for deterministic, verifiable, and auditable AI-generated systems.">
     <meta property="og:url" content="https://devmatrix.dev">
-    <meta name="twitter:card" content="summary_large_image">
-    
+    <meta name="twitter:card" content="summary">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
-            --primary-blue: #0062ff;
-            --primary-purple: #7c3aed;
-            --bg-dark: #0a0a0a;
-            --bg-secondary: #111111;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --border-color: #27272a;
+            --blue: #0062ff;
+            --blue-dim: rgba(0, 98, 255, 0.12);
+            --purple: #7c3aed;
+            --purple-dim: rgba(124, 58, 237, 0.08);
+            --bg: #060608;
+            --bg-raised: #0c0c10;
+            --bg-card: #101014;
+            --text: #ececf1;
+            --text-mid: #8e8ea0;
+            --text-dim: #4e4e5a;
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --glow-blue: rgba(0, 98, 255, 0.15);
+            --glow-purple: rgba(124, 58, 237, 0.10);
         }
-        
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
         }
-        
-        /* Animated background gradient */
-        .gradient-bg {
+
+        /* === Background === */
+        .bg-effects {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(0, 98, 255, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 50%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
-            z-index: -1;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
         }
-        
-        /* Grid pattern overlay */
-        .grid-pattern {
+
+        .bg-effects::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(ellipse, var(--glow-blue) 0%, transparent 70%);
+            filter: blur(80px);
+        }
+
+        .bg-effects::after {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(ellipse, var(--glow-purple) 0%, transparent 70%);
+            filter: blur(80px);
+        }
+
+        .grid-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 100%);
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        header {
-            padding: 2rem 0;
-            backdrop-filter: blur(10px);
+
+        /* === Layout === */
+        .page {
             position: relative;
-            z-index: 10;
+            z-index: 1;
         }
-        
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* === Header === */
+        .header {
+            padding: 40px 0 0;
+        }
+
         .logo {
+            display: block;
+            width: 160px;
+            height: auto;
+            opacity: 0.95;
+        }
+
+        /* === Hero === */
+        .hero {
+            padding: 100px 0 80px;
+        }
+
+        .hero-anchor {
+            font-size: 1.375rem;
+            font-weight: 400;
+            line-height: 1.75;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            max-width: 620px;
+        }
+
+        .hero-sub {
+            font-size: 0.9375rem;
+            color: var(--text-mid);
+            margin-top: 20px;
+            letter-spacing: 0.01em;
+        }
+
+        .hero-cta {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            margin-top: 48px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            border-radius: 8px;
+            color: #fff;
             text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 4px 20px -4px rgba(0, 98, 255, 0.25);
         }
-        
-        .logo svg {
-            width: 40px;
-            height: 40px;
+
+        .hero-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 8px 32px -4px rgba(0, 98, 255, 0.35);
         }
-        
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
+
+        .hero-cta svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
         }
-        
-        /* Main content */
-        .hero {
-            min-height: calc(100vh - 100px);
+
+        .hero-cta:hover svg {
+            transform: translateX(2px);
+        }
+
+        /* === Sections === */
+        .section {
+            padding: 56px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-dim);
+            margin-bottom: 28px;
+        }
+
+        /* === Problem === */
+        .problem-list {
+            list-style: none;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 10px 0;
+            font-size: 0.9375rem;
+            color: var(--text);
+            letter-spacing: 0.005em;
+        }
+
+        .problem-dot {
+            flex-shrink: 0;
+            width: 5px;
+            height: 5px;
+            margin-top: 9px;
+            border-radius: 50%;
+            background: var(--blue);
+            box-shadow: 0 0 8px var(--glow-blue);
+        }
+
+        /* === Diagram === */
+        .diagram-card {
+            padding: 32px 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            font-size: 0.8125rem;
+            font-weight: 400;
+            color: var(--text-mid);
+            line-height: 1.7;
+            text-align: center;
+            white-space: pre;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diagram-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--blue), transparent);
+            opacity: 0.4;
+        }
+
+        .diagram-card .dm {
+            color: var(--blue);
+            font-weight: 500;
+        }
+
+        .diagram-card .arrow {
+            color: var(--text-dim);
+        }
+
+        .positioning-text {
+            font-size: 0.9375rem;
+            color: var(--text-mid);
+            margin-top: 28px;
+            line-height: 1.7;
+        }
+
+        /* === Evidence === */
+        .evidence-list {
+            list-style: none;
+        }
+
+        .evidence-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .evidence-item:last-child {
+            border-bottom: none;
+        }
+
+        .evidence-link {
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 4rem 0;
+            justify-content: space-between;
+            padding: 14px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            letter-spacing: 0.005em;
+            transition: color 0.2s ease;
         }
-        
-        .hero-content {
-            max-width: 800px;
-            animation: fadeInUp 1s ease-out;
+
+        .evidence-link:hover {
+            color: var(--blue);
         }
-        
-        @keyframes fadeInUp {
+
+        .evidence-link svg {
+            width: 14px;
+            height: 14px;
+            color: var(--text-dim);
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .evidence-link:hover svg {
+            color: var(--blue);
+            transform: translateX(2px);
+        }
+
+        /* === Footer === */
+        .footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 32px;
+        }
+
+        .footer-text {
+            font-size: 0.8125rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        .footer-text a {
+            color: var(--text-mid);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-text a:hover {
+            color: var(--text);
+        }
+
+        .footer-copy {
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            opacity: 0.5;
+        }
+
+        /* === Animation === */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out both;
+        }
+
+        .fade-in-delay-1 { animation-delay: 0.1s; }
+        .fade-in-delay-2 { animation-delay: 0.2s; }
+        .fade-in-delay-3 { animation-delay: 0.35s; }
+
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(16px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-            padding: 0.5rem 1.25rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.8;
-            }
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            animation: blink 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
-        }
-        
-        h1 {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .tagline {
-            font-size: clamp(1.25rem, 3vw, 1.75rem);
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            font-weight: 400;
-        }
-        
-        /* Email form */
-        .waitlist-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            max-width: 450px;
-            margin: 0 auto 3rem;
-        }
-        
-        .form-group {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .email-input {
-            flex: 1;
-            min-width: 250px;
-            padding: 0.875rem 1.25rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .email-input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .email-input::placeholder {
-            color: #52525b;
-        }
-        
-        .submit-btn {
-            padding: 0.875rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
-        }
-        
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-        
-        .form-message {
-            text-align: center;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Features preview - Responsive adjustments */
-        .features-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-            padding-top: 4rem;
-            border-top: 1px solid var(--border-color);
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        @media (max-width: 1024px) {
-            .features-preview {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-        }
-        
+
+        /* === Responsive === */
         @media (max-width: 640px) {
-            .features-preview {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+            .container {
+                padding: 0 20px;
             }
-        }
-        
-        .feature {
-            text-align: center;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-        
-        .feature:hover {
-            opacity: 1;
-        }
-        
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        .feature-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .feature-desc {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Mission Section Styles */
-        .mission-section {
-            padding: 6rem 0;
-            background: linear-gradient(180deg, transparent 0%, var(--bg-secondary) 50%, transparent 100%);
-            position: relative;
-        }
-        
-        .mission-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .mission-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .mission-content {
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-        
-        .mission-content p {
-            margin-bottom: 1.5rem;
-        }
-        
-        .mission-content strong {
-            color: var(--text-primary);
-        }
-        
-        .mission-list {
-            list-style: none;
-            padding: 0;
-            margin: 1.5rem 0 2rem;
-        }
-        
-        .mission-list li {
-            position: relative;
-            padding-left: 0;
-            margin-bottom: 0.75rem;
-            color: var(--text-secondary);
-        }
-        
-        .mission-list li:before {
-            display: none;
-        }
-        
-        .mission-highlight {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-align: center;
-            margin: 3rem 0;
-            padding: 1.5rem;
-            border-left: 3px solid var(--primary-blue);
-            background: rgba(0, 98, 255, 0.05);
-        }
-        
-        .skepticism-note {
-            margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-        }
-        
-        .skepticism-note p {
-            margin-bottom: 1rem;
-        }
-        
-        .skepticism-note p:last-child {
-            margin-bottom: 0;
-        }
-        
-        .skepticism-note em {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-        
-        .skepticism-note strong {
-            color: var(--primary-blue);
-            font-weight: 600;
-        }
-        
-        #betaDays {
-            color: var(--primary-blue);
-            font-weight: 700;
-        }
-        
-        @media (max-width: 768px) {
-            .mission-title {
-                font-size: 2rem;
+
+            .hero {
+                padding: 64px 0 56px;
             }
-            
-            .mission-content {
-                font-size: 1rem;
+
+            .hero-anchor {
+                font-size: 1.1875rem;
             }
-            
-            .mission-highlight {
-                font-size: 1.125rem;
-                padding: 1rem;
-            }
-        }
-        
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid var(--border-color);
-            margin-top: 6rem;
-        }
-        
-        .footer-text {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        
-        /* Countdown styles */
-        .countdown-container {
-            margin: 3rem 0;
-            text-align: center;
-        }
-        
-        .countdown-label {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .countdown-item {
-            text-align: center;
-        }
-        
-        .countdown-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, #0062ff, #0052d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-            min-width: 80px;
-        }
-        
-        .countdown-unit {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.5rem;
-        }
-        
-        @media (max-width: 640px) {
-            .countdown {
-                gap: 1rem;
-            }
-            
-            .countdown-number {
-                font-size: 2rem;
-                min-width: 60px;
-            }
-            
-            .countdown-unit {
+
+            .diagram-card {
+                padding: 24px 20px;
                 font-size: 0.75rem;
             }
-        }
-        
-        /* Success message */
-        .success-message {
-            display: none;
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            padding: 1rem;
-            border-radius: 8px;
-            color: #4ade80;
-            margin-top: 1rem;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .hero {
-                min-height: calc(100vh - 80px);
-                padding: 2rem 0;
-            }
-            
-            h1 {
-                font-size: clamp(2rem, 7vw, 3.5rem);
-            }
-            
-            .tagline {
-                font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-            }
-            
-            .email-input {
-                min-width: 200px;
+
+            .section {
+                padding: 40px 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="gradient-bg"></div>
-    <div class="grid-pattern"></div>
-    
-    <header>
-        <div class="container">
-            <a href="/" class="logo">
-                <!-- DevMatrix Logo -->
-                <img src="/devmatrix-logo.svg" alt="DevMatrix" style="width: 180px; height: 140px;">
-            </a>
-        </div>
-    </header>
-    
-    <main class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="status-badge">
-                    <span class="status-dot"></span>
-                    <span>Compiler-Grade Software Engineering</span>
-                </div>
+    <div class="bg-effects"></div>
+    <div class="grid-overlay"></div>
 
-                <h1>A Deterministic Spec-to-System Compiler for Software Systems</h1>
-                <p class="tagline">Deterministic compilation of specifications into production-grade systems.</p>
-                <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 3rem; font-weight: 400;">Not text generation. Not agents. A new compilation model for software.</p>
-                
-                <form class="waitlist-form" id="waitlistForm" action="https://formspree.io/f/xgvynzvw" method="POST">
-                    <div class="form-group">
-                        <input
-                            type="email"
-                            name="email"
-                            class="email-input"
-                            placeholder="your.email@company.com"
-                            required
-                            id="emailInput"
-                        />
-                        <input type="hidden" name="source" value="DevMatrix Landing Page">
-                        <input type="hidden" name="type" value="Technical Briefing Request">
-                        <button type="submit" class="submit-btn">
-                            Request Technical Briefing
-                        </button>
-                    </div>
-                    <p class="form-message">
-                        Technical access is limited. If you are evaluating compiler-level AI systems or next-generation SWE infrastructure, we'll be in touch.
-                    </p>
-                    <div class="success-message" id="successMessage">
-                        ✓ Request received. We'll contact you for a technical discussion.
-                    </div>
-                </form>
-                
-                <div class="features-preview">
-                    <div class="feature">
-                        <div class="feature-icon">📋</div>
-                        <h3 class="feature-title">Canonical IR</h3>
-                        <p class="feature-desc">Multi-layer intermediate representation: domain, behavior, infrastructure, validation</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">✓</div>
-                        <h3 class="feature-title">Deterministic</h3>
-                        <p class="feature-desc">Same specification → identical output. Reproducible, auditable, checksum-stable</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">🔍</div>
-                        <h3 class="feature-title">No Hallucinations</h3>
-                        <p class="feature-desc">Validation passes ensure correctness by design. No probabilistic outputs</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">🏗️</div>
-                        <h3 class="feature-title">Compiler Semantics</h3>
-                        <p class="feature-desc">Learning at the compiler level, not prompt level. Invariants, contracts, state</p>
-                    </div>
-                </div>
-                
-                <!-- The Model Section -->
-                <section class="mission-section">
-                    <div class="mission-container">
-                        <h2 class="mission-title">The Compiler Model</h2>
-
-                        <div class="mission-content">
-                            <p>Software generation has been treated as a text problem. Prompt engineering, token optimization, probabilistic outputs. This is fundamentally wrong.</p>
-
-                            <p><strong>Software is a system.</strong> It has invariants, contracts, and state. It has layers: domain logic, behavior, infrastructure, validation. These are not text—they are structure.</p>
-
-                            <p>DevMatrix applies compiler semantics to software engineering. Your specification becomes an Intermediate Representation (IR)—a canonical, multi-layer description of the system you want to build. From that IR, we generate deterministic, reproducible, auditable systems.</p>
-
-                            <p><strong>What this means:</strong></p>
-                            <ul class="mission-list">
-                                <li>• Same specification → identical output, every time</li>
-                                <li>• No hallucinations by design—validation passes ensure correctness</li>
-                                <li>• Zero LLM calls after IR stabilization</li>
-                            </ul>
-
-                            <p>This is not an app builder. This is not agents. This is a new compilation model for software.</p>
-
-                            <p class="mission-highlight">DevMatrix treats software generation as a deterministic compilation problem, not a probabilistic text problem.</p>
-
-                            <p style="text-align: center; color: var(--text-secondary); font-size: 0.95rem; margin-top: 2rem;">
-                                <em>Intellectual Property & AI Usage Terms available <a href="/AI-USAGE-TERMS.md" style="color: #0062ff; text-decoration: underline;">here</a>.</em>
-                            </p>
-
-                            <div class="skepticism-note">
-                                <p><strong>DevMatrix is not public software.</strong> The system is currently evaluated in controlled technical reviews and private research discussions.</p>
-                                <p>If you are evaluating compiler-level AI systems or next-generation SWE infrastructure, we'll be in touch for a technical discussion.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+    <div class="page">
+        <header class="header">
+            <div class="container">
+                <img src="/devmatrix-logo.svg" alt="DevMatrix" class="logo">
             </div>
-        </div>
-    </main>
-    
-    <footer>
-        <div class="container">
-            <p class="footer-text">
-                © 2025 DevMatrix. All rights reserved.<br>
-                <span style="font-size: 0.8rem; margin-top: 0.5rem; display: inline-block;">
-                    Created by Ariel E. Ghysels •
-                    <a href="mailto:aeghysels@devmatrix.dev" style="color: #0062ff; text-decoration: none;">aeghysels@devmatrix.dev</a>
-                    <br>
-                    <a href="https://www.linkedin.com/in/ariel-ghysels-52469198/" target="_blank" rel="noopener noreferrer" style="color: #0062ff; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-right: 12px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.004 1.418-.103.249-.129.597-.129.946v5.441h-3.554s.05-8.736 0-9.646h3.554v1.348c-.009.015-.021.029-.03.042h.03v-.042c.418-.645 1.162-1.571 2.828-1.571 2.065 0 3.615 1.348 3.615 4.253v5.616zM5.337 8.855c-1.144 0-1.915-.758-1.915-1.704 0-.955.77-1.704 1.963-1.704 1.192 0 1.915.749 1.948 1.704 0 .946-.756 1.704-1.996 1.704zm-1.6 11.597h3.119V9.671H3.737v10.781zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
-                        </svg>
-                        LinkedIn
+        </header>
+
+        <main>
+            <div class="container">
+                <div class="hero">
+                    <p class="hero-anchor fade-in">DevMatrix is model-agnostic infrastructure designed to sit downstream of reasoning models, turning their outputs into deterministic, verifiable, and auditable systems.</p>
+                    <p class="hero-sub fade-in fade-in-delay-1">Deterministic compilation, governance, and auditability for AI-generated systems.</p>
+                    <a href="https://github.com/devmatrix-ai/devmatrix-public" class="hero-cta fade-in fade-in-delay-2">
+                        View verification evidence
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                     </a>
-                    <a href="https://x.com/builddevmatrix" target="_blank" rel="noopener noreferrer" style="color: #0062ff; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.207-6.807-5.974 6.807H2.882l7.432-8.491L1.227 2.25h6.836l4.713 6.231 5.579-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                        </svg>
-                        @builddevmatrix
-                    </a>
-                    <br>
-                    <span style="color: #71717a; font-size: 0.7rem; margin-top: 0.5rem; display: block;">
-                        Intellectual Property registered in USA & EU
-                    </span>
-                    <a href="/AI-USAGE-TERMS.md" style="color: #a1a1aa; text-decoration: none; font-size: 0.75rem;">Intellectual Property & AI Usage Terms</a>
-                </span>
-            </p>
-        </div>
-    </footer>
-    
-    <script>
-        // Countdown Timer
-        function updateCountdown() {
-            const betaDate = new Date('2025-08-08T00:00:00');
-            const now = new Date();
-            const difference = betaDate - now;
-            
-            if (difference > 0) {
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                
-                document.getElementById('days').textContent = String(days).padStart(2, '0');
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-                
-                // Update days in mission section
-                document.getElementById('betaDays').textContent = days;
-            } else {
-                document.getElementById('countdown').innerHTML = '<div class="countdown-number">🚀 Beta is Live!</div>';
-            }
-        }
-        
-        // Update countdown every second
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        
-        // Form handling
-        document.getElementById('waitlistForm').addEventListener('submit', async (e) => {
-            const button = e.target.querySelector('.submit-btn');
-            const successMsg = document.getElementById('successMessage');
-            
-            // Change button text while submitting
-            button.textContent = 'Joining...';
-            
-            // Show success message after form redirects back
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('success') === 'true') {
-                successMsg.style.display = 'block';
-                // Clear URL parameters
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 5000);
-            }
-        });
-        
-        // Add some subtle animations on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.feature').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
-        });
-    </script>
+                </div>
+
+                <div class="section fade-in fade-in-delay-3">
+                    <h2 class="section-label">What problem this solves</h2>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            AI-generated systems are non-deterministic
+                        </li>
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            Verification, QA, and compliance break at scale
+                        </li>
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            DevMatrix compiles governance into the system itself
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-label">Where it fits</h2>
+                    <div class="diagram-card">Reasoning Models
+<span class="arrow">↓</span>
+Specifications
+<span class="arrow">↓</span>
+<span class="dm">DevMatrix</span>
+<span class="arrow">↓</span>
+Deterministic Systems</div>
+                    <p class="positioning-text">DevMatrix does not replace models. It makes their outputs production-grade.</p>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-label">Evidence, not claims</h2>
+                    <ul class="evidence-list">
+                        <li class="evidence-item">
+                            <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
+                                Sealed provenance
+                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
+                            </a>
+                        </li>
+                        <li class="evidence-item">
+                            <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
+                                Reproducibility spec
+                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
+                            </a>
+                        </li>
+                        <li class="evidence-item">
+                            <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
+                                Verification scripts
+                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
+                            </a>
+                        </li>
+                        <li class="evidence-item">
+                            <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
+                                QA &amp; gate reports
+                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-label">Why this provenance is irrefutable</h2>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            Every artifact is cryptographically fingerprinted (IR, outputs, evidence)
+                        </li>
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            Merkle roots bind all files into a single verifiable build state
+                        </li>
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            Deterministic seeds guarantee identical outputs from identical inputs
+                        </li>
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            Any deviation breaks verification and fails the seal
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="footer-text">For technical evaluation, see the <a href="https://github.com/devmatrix-ai/devmatrix-public">public verification repository</a>.</p>
+                <p class="footer-copy">&copy; 2025 DevMatrix &middot; Ariel E. Ghysels</p>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>

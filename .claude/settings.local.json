@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_serena_serena__list_dir",
+      "Bash(git -C /home/kwar/code/DevMatrix_landing remote:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "qdrant"
+  ]
+}
