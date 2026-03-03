@@ -76,7 +76,11 @@
 
         /* === Header === */
         .header { padding: 40px 0 0; }
-        .logo { display: block; width: 160px; height: auto; opacity: 0.95; }
+        .logo-wrap { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { display: block; width: 36px; height: 36px; }
+        .logo-text { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+        .logo-text .l-blue { color: #0375f7; }
+        .logo-text .l-white { color: #ffffff; }
 
         /* === Hero === */
         .hero { padding: 100px 0 80px; }
@@ -553,7 +557,10 @@
     <div class="page">
         <header class="header">
             <div class="container">
-                <img src="/dmx-logo.svg" alt="DMX" class="logo">
+                <div class="logo-wrap">
+                    <img src="/dmx-logo.svg" alt="" class="logo-icon">
+                    <span class="logo-text"><span class="l-blue">D</span><span class="l-white">M</span><span class="l-blue">X</span></span>
+                </div>
             </div>
         </header>
 
