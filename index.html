@@ -201,6 +201,8 @@
             margin-top: 4px;
         }
 
+        .stats--4 { grid-template-columns: repeat(4, 1fr); }
+
         /* === Diagram image === */
         .diagram-wrapper {
             margin-top: 40px;
@@ -524,7 +526,7 @@
             .hero { padding: 64px 0 56px; }
             .hero-title { font-size: 1.75rem; }
             .hero-sub { font-size: 1rem; }
-            .stats { grid-template-columns: repeat(2, 1fr); }
+            .stats, .stats--4 { grid-template-columns: repeat(2, 1fr); }
             .guarantees { grid-template-columns: 1fr; }
             .comparison { font-size: 0.75rem; }
             .comparison th, .comparison td { padding: 10px 10px; }
@@ -650,7 +652,7 @@
                     <div class="section-label">What DMX Compiles</div>
                     <h2 class="section-heading">Not code suggestions. Complete, production-ready platforms from a single specification.</h2>
 
-                    <div class="stats">
+                    <div class="stats stats--4">
                         <div class="stat">
                             <div class="stat-value stat-value--green">A+</div>
                             <div class="stat-label">Platform grade</div>
@@ -673,7 +675,7 @@
                         </div>
                     </div>
 
-                    <div class="stats" style="margin-top: 16px;">
+                    <div class="stats stats--4" style="margin-top: 16px;">
                         <div class="stat">
                             <div class="stat-value stat-value--blue">380K+</div>
                             <div class="stat-label">Lines of code generated</div>
@@ -715,7 +717,7 @@
                     <h2 class="section-heading">First compilation: ~$4 per module in LLM tokens.<br>Every recompilation after that: $0. Forever.</h2>
                     <p class="section-text">The IR is cached, cryptographically sealed, and reusable. A 12-microservice platform costs ~$48 in LLM tokens to create once, then recompiles infinite times at zero marginal cost. Current AI coding tools require a full LLM round-trip for every generation. DMX inverts the economics.</p>
 
-                    <div class="stats" style="margin-top: 32px;">
+                    <div class="stats stats--4" style="margin-top: 32px;">
                         <div class="stat">
                             <div class="stat-value stat-value--blue">~$48</div>
                             <div class="stat-label">Total LLM cost for 12 microservices</div>
