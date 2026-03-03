@@ -212,6 +212,79 @@
 
         .diagram-wrapper img { display: block; width: 100%; height: auto; }
 
+        /* === How it works === */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 32px;
+        }
+
+        .step {
+            background: var(--bg-card);
+            padding: 28px 20px;
+            position: relative;
+        }
+
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .step-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .step-desc {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .step-cost {
+            margin-top: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-dim);
+            opacity: 0.7;
+        }
+
+        /* === Enterprise alignment === */
+        .frameworks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .framework-tag {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-mid);
+        }
+
+        .enterprise-text {
+            font-size: 0.8125rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-top: 20px;
+            max-width: 620px;
+        }
+
         /* === Comparison table === */
         .comparison {
             width: 100%;
@@ -455,6 +528,7 @@
             .guarantees { grid-template-columns: 1fr; }
             .comparison { font-size: 0.75rem; }
             .comparison th, .comparison td { padding: 10px 10px; }
+            .steps { grid-template-columns: repeat(2, 1fr); }
             .paper-cta { flex-direction: column; gap: 20px; padding: 28px; text-align: center; }
             .paper-arrow { display: none; }
             .section { padding: 48px 0; }
@@ -491,7 +565,10 @@
                         <span class="accent">Compilers scale trust.</span>
                     </h1>
                     <p class="hero-sub fade-in fade-in-d1">DMX is a cognitive compiler that transforms natural language specifications into complete, production-ready software platforms through deterministic compilation.</p>
-                    <div class="hero-actions fade-in fade-in-d2">
+                    <div class="diagram-wrapper fade-in fade-in-d2" style="margin-top: 40px;">
+                        <img src="/compiler-wall-diagram.png" alt="The Compiler Wall: the architectural boundary between probabilistic AI intelligence and deterministic infrastructure">
+                    </div>
+                    <div class="hero-actions fade-in fade-in-d3">
                         <a href="/DMX_Breaking_The_Compiler_Wall.pdf" class="btn btn--primary">
                             Read the whitepaper
                             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
@@ -507,7 +584,7 @@
                 <div class="section fade-in fade-in-d3">
                     <div class="section-label">The AI Code Security Crisis</div>
                     <h2 class="section-heading">AI generates 41% of all code on GitHub.<br>It is not inherently deterministic, reproducible, or auditable.</h2>
-                    <p class="section-text">Every AI-generated system eventually hits the same wall: Can we reproduce this? Can we audit it? Can we certify it? Can we prove nothing drifted? Without a deterministic infrastructure layer, the answer is no.</p>
+                    <p class="section-text">Every AI-generated system eventually hits the same wall: Can we reproduce this? Can we audit it? Can we certify it? Can we prove nothing drifted? Without a deterministic infrastructure layer, these questions remain structurally unresolved.</p>
 
                     <div class="stats">
                         <div class="stat">
@@ -532,10 +609,39 @@
                 <div class="section">
                     <div class="section-label">The Compiler Wall</div>
                     <h2 class="section-heading">The boundary where probabilistic intelligence must become deterministic infrastructure.</h2>
-                    <p class="section-text">Every time computing faced a trust crisis -- portability, correctness, reproducibility, safety -- the answer was never "better programmers." It was always a better compiler. FORTRAN, C, LLVM, the JVM. Now AI faces the largest trust crisis in the history of software. The answer is the same.</p>
+                    <p class="section-text">Every time computing faced a trust crisis -- portability, correctness, reproducibility, safety -- the answer was never better tooling alone. It was a better compiler. FORTRAN, C, LLVM, the JVM. AI now faces a comparable trust challenge. The architectural pattern is the same.</p>
+                </div>
 
-                    <div class="diagram-wrapper">
-                        <img src="/compiler-wall-diagram.png" alt="The Compiler Wall: the architectural boundary between probabilistic AI intelligence and deterministic infrastructure">
+                <!-- How it Works -->
+                <div class="section">
+                    <div class="section-label">How It Works</div>
+                    <h2 class="section-heading">Four phases. One deterministic pipeline.</h2>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">01</div>
+                            <div class="step-title">Specification</div>
+                            <div class="step-desc">A natural language specification describes the system: entities, relationships, business rules, access control, state machines.</div>
+                            <div class="step-cost">Input: human intent</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">02</div>
+                            <div class="step-title">Semantic Understanding</div>
+                            <div class="step-desc">An LLM reasons over the spec once to produce a typed Intermediate Representation. This is the only probabilistic step.</div>
+                            <div class="step-cost">~$4 per module (one-time)</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">03</div>
+                            <div class="step-title">Deterministic Compilation</div>
+                            <div class="step-desc">100+ ordered transformation passes, code emission, and verification gates. Zero LLM calls. Byte-identical output guaranteed.</div>
+                            <div class="step-cost">&lt;25s per module</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">04</div>
+                            <div class="step-title">Sealed Deployment</div>
+                            <div class="step-desc">Cryptographic fingerprint, provenance chain, compliance artifacts, and full platform deployment. Every artifact traceable.</div>
+                            <div class="step-cost">Verified &amp; auditable</div>
+                        </div>
                     </div>
                 </div>
 
@@ -636,7 +742,7 @@
                 <!-- Comparison -->
                 <div class="section">
                     <div class="section-label">Gap Analysis</div>
-                    <h2 class="section-heading">This is not a competitive comparison. It is a gap analysis.</h2>
+                    <h2 class="section-heading">Not a competitive comparison. A structural gap analysis.</h2>
                     <p class="section-text" style="margin-bottom: 24px;">Current AI coding tools operate above the Compiler Wall. DMX operates below it. They generate code. DMX compiles infrastructure.</p>
 
                     <table class="comparison">
@@ -695,7 +801,7 @@
                 <!-- Five Guarantees -->
                 <div class="section">
                     <div class="section-label">Architectural Guarantees</div>
-                    <h2 class="section-heading">Five structural properties that no probabilistic system can provide.</h2>
+                    <h2 class="section-heading">Structural properties that require compilation architecture by design.</h2>
 
                     <div class="guarantees">
                         <div class="guarantee">
@@ -725,6 +831,26 @@
                     </div>
                 </div>
 
+                <!-- Enterprise Alignment -->
+                <div class="section">
+                    <div class="section-label">Enterprise Alignment</div>
+                    <h2 class="section-heading">Compliance artifacts are a primary compiler output, not an afterthought.</h2>
+                    <p class="section-text">DMX generates the evidence auditors require: threat models, access control matrices, SBOM validation, deterministic build logs, and provenance chains. Every verification gate maps to compliance controls.</p>
+
+                    <div class="frameworks">
+                        <span class="framework-tag">SOC 2</span>
+                        <span class="framework-tag">HIPAA</span>
+                        <span class="framework-tag">ISO 27001</span>
+                        <span class="framework-tag">GDPR</span>
+                        <span class="framework-tag">PCI DSS</span>
+                        <span class="framework-tag">FedRAMP</span>
+                        <span class="framework-tag">NIST 800-53</span>
+                        <span class="framework-tag">SLSA</span>
+                    </div>
+
+                    <p class="enterprise-text">DMX does not claim external certification. It generates the structural artifacts and evidence packs that map to these frameworks, reducing the gap between compiled output and regulatory requirements.</p>
+                </div>
+
                 <!-- Whitepaper -->
                 <div class="section">
                     <div class="section-label">Full Technical Paper</div>
@@ -749,25 +875,25 @@
                     <ul class="evidence-list">
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                Build fingerprints &amp; cryptographic hashes
+                                <span>Build fingerprints <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; 8 sealed builds with full cryptographic hashes, independently verifiable</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                Reproducibility specification
+                                <span>Reproducibility specification <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; hash algorithm, replay protocol, and determinism proof</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                Verification scripts
+                                <span>Verification scripts <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; run them yourself against any published fingerprint</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
                             <a href="/DMX_Breaking_The_Compiler_Wall.pdf" class="evidence-link">
-                                Full technical whitepaper (PDF)
+                                <span>Full technical whitepaper <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; architecture, benchmarks, security analysis, and compilation economics</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
