@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevMatrix</title>
-    <meta name="description" content="Model-agnostic infrastructure for deterministic, verifiable, and auditable AI-generated systems.">
+    <title>DMX — Breaking the Compiler Wall</title>
+    <meta name="description" content="DMX is a cognitive compiler. It transforms AI-generated outputs into deterministic, verifiable, and auditable infrastructure. Patent pending.">
 
     <link rel="icon" type="image/svg+xml" href="/devmatrix-logo.svg">
 
-    <meta property="og:title" content="DevMatrix">
-    <meta property="og:description" content="Model-agnostic infrastructure for deterministic, verifiable, and auditable AI-generated systems.">
+    <meta property="og:title" content="DMX — Breaking the Compiler Wall">
+    <meta property="og:description" content="DMX is a cognitive compiler. It transforms AI-generated outputs into deterministic, verifiable, and auditable infrastructure.">
     <meta property="og:url" content="https://devmatrix.dev">
     <meta name="twitter:card" content="summary">
 
@@ -261,6 +261,97 @@
             line-height: 1.7;
         }
 
+        /* === Whitepaper === */
+        .whitepaper-card {
+            display: block;
+            padding: 32px 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .whitepaper-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 8px 32px -8px rgba(0, 98, 255, 0.12);
+        }
+
+        .whitepaper-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--purple), transparent);
+            opacity: 0.4;
+        }
+
+        .whitepaper-eyebrow {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--purple);
+            margin-bottom: 12px;
+        }
+
+        .whitepaper-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
+        }
+
+        .whitepaper-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-mid);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .whitepaper-meta {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .whitepaper-meta svg {
+            width: 14px;
+            height: 14px;
+            color: var(--purple);
+        }
+
+        /* === Architecture diagram === */
+        .diagram-img-wrapper {
+            margin-top: 32px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .diagram-img-wrapper img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .diagram-img-caption {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-align: center;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+
         /* === Evidence === */
         .evidence-list {
             list-style: none;
@@ -391,8 +482,8 @@
         <main>
             <div class="container">
                 <div class="hero">
-                    <p class="hero-anchor fade-in">DevMatrix is model-agnostic infrastructure designed to sit downstream of reasoning models, turning their outputs into deterministic, verifiable, and auditable systems.</p>
-                    <p class="hero-sub fade-in fade-in-delay-1">Deterministic compilation, governance, and auditability for AI-generated systems.</p>
+                    <p class="hero-anchor fade-in">DMX is a cognitive compiler. It transforms natural language specifications into complete, production-ready software platforms through deterministic compilation.</p>
+                    <p class="hero-sub fade-in fade-in-delay-1">Foundation models scale intelligence. Compilers scale trust. DMX is the infrastructure layer between AI intelligence and enterprise trust.</p>
                     <a href="https://github.com/devmatrix-ai/devmatrix-public" class="hero-cta fade-in fade-in-delay-2">
                         View verification evidence
                         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
@@ -400,21 +491,40 @@
                 </div>
 
                 <div class="section fade-in fade-in-delay-3">
-                    <h2 class="section-label">What problem this solves</h2>
+                    <h2 class="section-label">The Compiler Wall</h2>
                     <ul class="problem-list">
                         <li class="problem-item">
                             <span class="problem-dot"></span>
-                            AI-generated systems are non-deterministic
+                            AI generates 41% of all code — none of it is deterministic, reproducible, or auditable
                         </li>
                         <li class="problem-item">
                             <span class="problem-dot"></span>
-                            Verification, QA, and compliance break at scale
+                            The best model available produces secure code only 56% of the time
                         </li>
                         <li class="problem-item">
                             <span class="problem-dot"></span>
-                            DevMatrix compiles governance into the system itself
+                            The Compiler Wall is the boundary where probabilistic intelligence must become deterministic infrastructure
+                        </li>
+                        <li class="problem-item">
+                            <span class="problem-dot"></span>
+                            DMX breaks through it — same input, same output, always
                         </li>
                     </ul>
+
+                    <a href="/DMX_Breaking_The_Compiler_Wall.pdf" class="whitepaper-card" style="margin-top: 32px;">
+                        <div class="whitepaper-eyebrow">Whitepaper — March 2026</div>
+                        <div class="whitepaper-title">Breaking the Compiler Wall</div>
+                        <div class="whitepaper-subtitle">The Infrastructure Layer Between AI Intelligence and Enterprise Trust</div>
+                        <div class="whitepaper-meta">
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h5.5L13 5.5V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><polyline points="9.5 2 9.5 6 13 6"/></svg>
+                            Read the full paper (PDF)
+                        </div>
+                    </a>
+
+                    <div class="diagram-img-wrapper" style="margin-top: 24px;">
+                        <img src="/compiler-wall-diagram.png" alt="DMX Compiler Wall Architecture — the boundary between probabilistic AI and deterministic infrastructure">
+                        <div class="diagram-img-caption">The Compiler Wall: where probabilistic intelligence becomes deterministic infrastructure</div>
+                    </div>
                 </div>
 
                 <div class="section">
@@ -423,10 +533,10 @@
 <span class="arrow">↓</span>
 Specifications
 <span class="arrow">↓</span>
-<span class="dm">DevMatrix</span>
+<span class="dm">DMX Cognitive Compiler</span>
 <span class="arrow">↓</span>
 Deterministic Systems</div>
-                    <p class="positioning-text">DevMatrix does not replace models. It makes their outputs production-grade.</p>
+                    <p class="positioning-text">DMX does not replace foundation models. It completes them — turning intelligence into auditable, deployable infrastructure.</p>
                 </div>
 
                 <div class="section">
@@ -434,25 +544,19 @@ Deterministic Systems</div>
                     <ul class="evidence-list">
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                Sealed provenance
+                                Sealed provenance &amp; build fingerprints
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                Reproducibility spec
+                                Reproducibility spec &amp; verification scripts
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
-                            <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                Verification scripts
-                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
-                            </a>
-                        </li>
-                        <li class="evidence-item">
-                            <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                QA &amp; gate reports
+                            <a href="/DMX_Breaking_The_Compiler_Wall.pdf" class="evidence-link">
+                                Full technical whitepaper (PDF)
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
@@ -485,8 +589,8 @@ Deterministic Systems</div>
 
         <footer class="footer">
             <div class="container">
-                <p class="footer-text">For technical evaluation, see the <a href="https://github.com/devmatrix-ai/devmatrix-public">public verification repository</a>.</p>
-                <p class="footer-copy">&copy; 2025 DevMatrix &middot; Ariel E. Ghysels</p>
+                <p class="footer-text">For technical evaluation, see the <a href="https://github.com/devmatrix-ai/devmatrix-public">public verification repository</a> or read the <a href="/DMX_Breaking_The_Compiler_Wall.pdf">full whitepaper</a>.</p>
+                <p class="footer-copy">&copy; 2026 DMX &middot; Ariel E. Ghysels &middot; Patent Pending US &middot; Copyright US &amp; EU</p>
             </div>
         </footer>
     </div>
