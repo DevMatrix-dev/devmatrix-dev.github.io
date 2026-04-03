@@ -84,7 +84,7 @@
         /* === Nav === */
         .nav { display: flex; align-items: center; gap: 24px; }
         .nav-link {
-            font-size: 0.8125rem; font-weight: 500; color: var(--text-dim);
+            font-size: 0.8125rem; font-weight: 500; color: var(--text-mid);
             text-decoration: none; transition: color 0.2s;
         }
         .nav-link:hover { color: var(--text); }
@@ -159,7 +159,7 @@
 
         .section-label {
             font-size: 0.6875rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.12em; color: var(--text-dim); margin-bottom: 12px;
+            letter-spacing: 0.12em; color: var(--text-mid); margin-bottom: 12px;
         }
 
         .section-heading {
@@ -203,15 +203,15 @@
 
         .stat-label {
             font-size: 0.75rem;
-            color: var(--text-dim);
+            color: var(--text-mid);
             margin-top: 6px;
             line-height: 1.4;
         }
 
         .stat-source {
             font-size: 0.625rem;
-            color: var(--text-dim);
-            opacity: 0.5;
+            color: var(--text-mid);
+            opacity: 0.7;
             margin-top: 4px;
         }
 
@@ -263,7 +263,7 @@
 
         .step-desc {
             font-size: 0.75rem;
-            color: var(--text-dim);
+            color: var(--text-mid);
             line-height: 1.5;
         }
 
@@ -271,8 +271,7 @@
             margin-top: 10px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.6875rem;
-            color: var(--text-dim);
-            opacity: 0.7;
+            color: var(--text-mid);
         }
 
         /* === Enterprise alignment === */
@@ -295,7 +294,7 @@
 
         .enterprise-text {
             font-size: 0.8125rem;
-            color: var(--text-dim);
+            color: var(--text-mid);
             line-height: 1.7;
             margin-top: 20px;
             max-width: 620px;
@@ -321,7 +320,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: var(--text-dim);
+            color: var(--text-mid);
             background: var(--bg-card);
         }
 
@@ -358,7 +357,7 @@
 
         .guarantee-desc {
             font-size: 0.8125rem;
-            color: var(--text-dim);
+            color: var(--text-mid);
             line-height: 1.5;
         }
 
@@ -412,7 +411,7 @@
         }
 
         .paper-subtitle {
-            font-size: 0.8125rem; color: var(--text-dim); line-height: 1.5;
+            font-size: 0.8125rem; color: var(--text-mid); line-height: 1.5;
         }
 
         .paper-arrow { color: var(--text-dim); transition: transform 0.2s, color 0.2s; }
@@ -465,10 +464,10 @@
 
         /* === Footer === */
         .footer { padding: 48px 0; border-top: 1px solid var(--border); margin-top: 24px; }
-        .footer-text { font-size: 0.8125rem; color: var(--text-dim); line-height: 1.6; }
+        .footer-text { font-size: 0.8125rem; color: var(--text-mid); line-height: 1.6; }
         .footer-text a { color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
         .footer-text a:hover { color: var(--text); }
-        .footer-copy { margin-top: 12px; font-size: 0.75rem; color: var(--text-dim); opacity: 0.5; }
+        .footer-copy { margin-top: 12px; font-size: 0.75rem; color: var(--text-mid); opacity: 0.7; }
 
         /* === Animations === */
         .fade-in { animation: fadeIn 0.8s ease-out both; }
@@ -531,8 +530,8 @@
             padding: 6px 14px;
             border-radius: 100px;
             background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
-            color: var(--text-dim);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-mid);
         }
 
         /* === Diagram link cards === */
@@ -558,7 +557,7 @@
 
         .diagram-card-icon { font-size: 2rem; margin-bottom: 12px; }
         .diagram-card-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-        .diagram-card-desc { font-size: 0.8125rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
+        .diagram-card-desc { font-size: 0.8125rem; color: var(--text-mid); line-height: 1.5; margin-bottom: 12px; }
         .diagram-card-action {
             font-size: 0.75rem; font-weight: 600; color: var(--blue);
             text-transform: uppercase; letter-spacing: 0.08em;
@@ -630,6 +629,10 @@
                     <div class="diagram-wrapper fade-in fade-in-d2" style="margin-top: 40px;">
                         <img src="img/compiler-wall-diagram.png" alt="The Compiler Wall: the architectural boundary between probabilistic AI intelligence and deterministic infrastructure">
                     </div>
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7437525851094536192/" target="_blank" rel="noopener" class="fade-in fade-in-d2" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 0.8125rem; color: var(--text-mid); text-decoration: none; transition: color 0.2s;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        The Compiler Wall &mdash; discussion on LinkedIn
+                    </a>
                     <div class="hero-actions fade-in fade-in-d3">
                         <a href="diagrams/dsl-reference.html" class="btn btn--primary">
                             Explore the DSL
@@ -972,6 +975,10 @@
                         </div>
                         <svg class="paper-arrow" width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                     </a>
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7437525851094536192/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 0.8125rem; color: var(--text-mid); text-decoration: none; transition: color 0.2s;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        See the discussion on LinkedIn &rarr;
+                    </a>
                 </div>
 
                 <!-- Evidence -->
@@ -982,25 +989,25 @@
                     <ul class="evidence-list">
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                <span>Build fingerprints <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; 8 sealed builds with full cryptographic hashes, independently verifiable</span></span>
+                                <span>Build fingerprints <span style="color:var(--text-mid); font-size:0.8125rem">&mdash; 8 sealed builds with full cryptographic hashes, independently verifiable</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                <span>Reproducibility specification <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; hash algorithm, replay protocol, and determinism proof</span></span>
+                                <span>Reproducibility specification <span style="color:var(--text-mid); font-size:0.8125rem">&mdash; hash algorithm, replay protocol, and determinism proof</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
                             <a href="https://github.com/devmatrix-ai/devmatrix-public" class="evidence-link">
-                                <span>Verification scripts <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; run them yourself against any published fingerprint</span></span>
+                                <span>Verification scripts <span style="color:var(--text-mid); font-size:0.8125rem">&mdash; run them yourself against any published fingerprint</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
                         <li class="evidence-item">
                             <a href="docs/DMX_Breaking_The_Compiler_Wall.pdf" class="evidence-link">
-                                <span>Full technical whitepaper <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; architecture, benchmarks, security analysis, and compilation economics</span></span>
+                                <span>Full technical whitepaper <span style="color:var(--text-mid); font-size:0.8125rem">&mdash; architecture, benchmarks, security analysis, and compilation economics</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
                         </li>
@@ -1041,7 +1048,8 @@
                     <a href="diagrams/00-end-to-end-flow.html">Pipeline</a> &nbsp;&middot;&nbsp;
                     <a href="diagrams/06-critics-arbitration-system.html">Critics</a> &nbsp;&middot;&nbsp;
                     <a href="https://github.com/devmatrix-ai/devmatrix-public">Verification Repository</a> &nbsp;&middot;&nbsp;
-                    <a href="https://github.com/devmatrix-ai">GitHub</a>
+                    <a href="https://github.com/devmatrix-ai">GitHub</a> &nbsp;&middot;&nbsp;
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7437525851094536192/" target="_blank" rel="noopener">The Compiler Wall on LinkedIn</a>
                 </p>
                 <p class="footer-copy">&copy; 2026 DMX &middot; Ariel E. Ghysels &middot; Patent Pending US &middot; Copyright US &amp; EU</p>
             </div>
