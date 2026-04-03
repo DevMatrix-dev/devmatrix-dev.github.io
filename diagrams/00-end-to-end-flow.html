@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevMatrix — From Spec to Running Platform</title>
+<style>
+  @media print {
+    body { background: #0d1117 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pulse { animation: none !important; }
+    .arrow-flow { animation: none !important; }
+    .glow { animation: none !important; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    padding: 0;
+  }
+  .diagram-content { max-width: 880px; margin: 0 auto; padding: 24px 32px; }
+
+  /* ── Title ── */
+  .title-bar {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .title-bar h1 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff, #3fb950);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+  }
+  .title-bar .subtitle {
+    font-size: 13px;
+    color: #8b949e;
+    margin-top: 4px;
+  }
+
+  /* ── Pipeline container (vertical) ── */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    position: relative;
+  }
+
+  /* ── Stage card (glass) ── */
+  .stage {
+    position: relative;
+    border-radius: 16px;
+    padding: 20px 24px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stage:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .stage-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  .stage-number {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 2px;
+  }
+  .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .stage-body {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* ── Stage colors ── */
+  .stage-1 { background: rgba(22, 27, 34, 0.85); border-color: rgba(88,166,255,0.2); }
+  .stage-2 { background: rgba(13, 42, 50, 0.75); border-color: rgba(63,185,80,0.15); }
+  .stage-3 {
+    background: transparent; border: none; backdrop-filter: none;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; position: relative;
+  }
+  .stage-4 { background: rgba(40, 20, 60, 0.7); border-color: rgba(188,140,255,0.2); }
+  .stage-5 { background: rgba(15, 40, 20, 0.7); border-color: rgba(63,185,80,0.2); }
+  .stage-6 { background: rgba(50, 15, 15, 0.7); border-color: rgba(248,81,73,0.2); }
+  .stage-7 { background: rgba(15, 45, 20, 0.75); border-color: rgba(63,185,80,0.3); }
+
+  /* ── Arrow connectors (vertical) ── */
+  .arrow-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 0;
+    position: relative;
+  }
+  .arrow-connector svg {
+    width: 28px;
+    height: 28px;
+    transform: rotate(90deg);
+  }
+  .arrow-flow {
+    animation: arrowPulse 2s ease-in-out infinite;
+  }
+  @keyframes arrowPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ── Compiler Wall (horizontal) ── */
+  .compiler-wall {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(90deg, #d29922, #e3b341, #d29922);
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(227,179,65,0.4), 0 0 40px rgba(227,179,65,0.15);
+    animation: wallGlow 3s ease-in-out infinite;
+  }
+  @keyframes wallGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(227,179,65,0.4), 0 0 40px rgba(227,179,65,0.15); }
+    50% { box-shadow: 0 0 30px rgba(227,179,65,0.7), 0 0 60px rgba(227,179,65,0.3); }
+  }
+  .wall-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e3b341;
+    text-shadow: 0 0 8px rgba(227,179,65,0.6);
+    text-align: center;
+    margin-top: 8px;
+  }
+  .wall-sub {
+    font-size: 8px;
+    color: #d29922;
+    opacity: 0.8;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  /* ── Spec authoring sub-cards ── */
+  .spec-mode {
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border: 1px solid;
+    position: relative;
+  }
+  .spec-mode h4 {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .spec-mode p {
+    font-size: 11px;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  .mode-dmx {
+    background: rgba(63,185,80,0.08);
+    border-color: rgba(63,185,80,0.25);
+  }
+  .mode-dmx h4 { color: #3fb950; }
+
+  .mode-legacy {
+    background: rgba(88,166,255,0.05);
+    border-color: rgba(88,166,255,0.12);
+    opacity: 0.65;
+  }
+  .mode-legacy h4 { color: #8b949e; font-size: 11px; }
+  .mode-legacy p { font-size: 10px; }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+  }
+  .badge-green {
+    background: rgba(63,185,80,0.2);
+    color: #3fb950;
+    border: 1px solid rgba(63,185,80,0.3);
+  }
+  .badge-orange {
+    background: rgba(210,153,34,0.2);
+    color: #e3b341;
+    border: 1px solid rgba(210,153,34,0.3);
+  }
+  .badge-blue {
+    background: rgba(88,166,255,0.15);
+    color: #58a6ff;
+    border: 1px solid rgba(88,166,255,0.2);
+  }
+  .badge-gray {
+    background: rgba(139,148,158,0.15);
+    color: #8b949e;
+    border: 1px solid rgba(139,148,158,0.2);
+  }
+  .badge-rec {
+    background: rgba(63,185,80,0.25);
+    color: #3fb950;
+    border: 1px solid rgba(63,185,80,0.4);
+    font-size: 7px;
+    padding: 1px 5px;
+    margin-left: 4px;
+  }
+
+  /* ── Sub-path lines ── */
+  .sub-path {
+    padding: 5px 0 3px 10px;
+    border-left: 2px solid;
+    margin: 3px 0;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .sub-path-green { border-color: rgba(63,185,80,0.4); }
+  .sub-path-orange { border-color: rgba(210,153,34,0.4); }
+
+  /* ── Detail items in stages ── */
+  .detail-item {
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .detail-item:last-child { border-bottom: none; }
+  .detail-label {
+    font-size: 10px;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+  }
+  .detail-value {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ── Output list (stage 7) ── */
+  .output-list {
+    list-style: none;
+    padding: 0;
+  }
+  .output-list li {
+    padding: 4px 0;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .output-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3fb950;
+    flex-shrink: 0;
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 0.5; box-shadow: none; }
+    50% { opacity: 1; box-shadow: 0 0 6px rgba(63,185,80,0.6); }
+  }
+
+  /* ── Parsing routes ── */
+  .parse-route {
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    font-size: 10px;
+    line-height: 1.5;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .parse-route strong {
+    font-size: 11px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .parse-dmx {
+    background: rgba(63,185,80,0.08);
+    border-color: rgba(63,185,80,0.15);
+  }
+  .parse-dmx strong { color: #3fb950; }
+  .parse-md {
+    background: rgba(88,166,255,0.05);
+    border-color: rgba(88,166,255,0.08);
+    opacity: 0.6;
+  }
+  .parse-md strong { color: #58a6ff; }
+  .parse-oapi {
+    background: rgba(139,148,158,0.05);
+    border-color: rgba(139,148,158,0.08);
+    opacity: 0.6;
+  }
+  .parse-oapi strong { color: #8b949e; }
+
+  /* ── Stat highlight ── */
+  .stat {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 10px;
+    opacity: 0.5;
+    margin-top: 2px;
+  }
+
+  /* ── Target chips ── */
+  .target-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .chip {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(63,185,80,0.12);
+    color: #3fb950;
+    border: 1px solid rgba(63,185,80,0.2);
+  }
+
+  /* ── Gate bars ── */
+  .gate-bar {
+    height: 6px;
+    border-radius: 3px;
+    margin: 4px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .gate-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; bottom: 0;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: gateSweep 3s ease-in-out infinite;
+  }
+  @keyframes gateSweep {
+    0% { left: -100%; }
+    100% { left: 200%; }
+  }
+  .gate-bar-red { background: rgba(248,81,73,0.3); }
+  .gate-bar-amber { background: rgba(210,153,34,0.3); }
+  .gate-bar-green { background: rgba(63,185,80,0.3); }
+
+  /* ── Bottom info bar ── */
+  .info-bar {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .info-item {
+    background: rgba(22,27,34,0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #8b949e;
+  }
+  .info-item strong {
+    color: #e6edf3;
+  }
+
+  /* ── Pulse animation for stage 7 ── */
+  .pulse {
+    animation: stagePulse 4s ease-in-out infinite;
+  }
+  @keyframes stagePulse {
+    0%, 100% { border-color: rgba(63,185,80,0.3); }
+    50% { border-color: rgba(63,185,80,0.6); box-shadow: 0 0 24px rgba(63,185,80,0.15); }
+  }
+
+  /* ── Nav bar (matches home) ── */
+  .diagram-header { padding: 40px 0 0; }
+  .diagram-header-inner {
+    max-width: 880px; margin: 0 auto; padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .diagram-header-logo { display: block; height: 43px; width: auto; }
+  .diagram-nav { display: flex; align-items: center; gap: 24px; }
+  .diagram-nav a {
+    font-size: 0.8125rem; font-weight: 500; color: #4e4e5a;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .diagram-nav a:hover { color: #ececf1; }
+  .diagram-nav a.active { color: #0062ff; }
+  @media (max-width: 768px) {
+    .diagram-header-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .diagram-nav { flex-wrap: wrap; gap: 12px; }
+  }
+
+  /* ── Fade-in animations ── */
+  .fade-in { animation: fadeIn 0.8s ease-out both; }
+  .fade-in-d1 { animation-delay: 0.1s; }
+  .fade-in-d2 { animation-delay: 0.2s; }
+  .fade-in-d3 { animation-delay: 0.35s; }
+  .fade-in-d4 { animation-delay: 0.5s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header class="diagram-header">
+  <div class="diagram-header-inner">
+    <a href="../index.html"><img src="../img/devmatrix-logo-full_1.svg" alt="DevMatrix" class="diagram-header-logo"></a>
+    <nav class="diagram-nav">
+      <a href="../index.html">Home</a>
+      <a href="dsl-reference.html">DSL</a>
+      <a href="00-end-to-end-flow.html" class="active">Pipeline</a>
+      <a href="06-critics-arbitration-system.html">Critics</a>
+      <a href="../docs/DMX_Breaking_The_Compiler_Wall.pdf">Whitepaper</a>
+    </nav>
+  </div>
+</header>
+
+<div class="diagram-content">
+<!-- ═══════════════ TITLE ═══════════════ -->
+<div class="title-bar fade-in">
+  <h1>DevMatrix — From Spec to Running Platform</h1>
+  <div class="subtitle">Executive Summary &bull; End-to-End Compilation Pipeline</div>
+</div>
+
+<!-- ═══════════════ PIPELINE ═══════════════ -->
+<div class="pipeline fade-in fade-in-d1">
+
+  <!-- ───── STAGE 1: SPEC AUTHORING ───── -->
+  <div class="stage stage-1">
+    <div class="stage-icon">&#x1F4DD;</div>
+    <div class="stage-number">Stage 1</div>
+    <div class="stage-title">Spec Authoring</div>
+    <div class="stage-body">
+
+      <!-- DMX PRIMARY -->
+      <div class="spec-mode mode-dmx">
+        <h4>DMX Spec Language (.dmx) <span class="badge badge-rec">RECOMMENDED</span></h4>
+
+        <div class="sub-path sub-path-green">
+          <strong style="font-size:11px;color:#3fb950;">Direct Authoring</strong>
+          SWE writes <code>.dmx</code> &rarr; Compile<br>
+          <span class="badge badge-green">Zero LLM</span>
+        </div>
+
+        <div class="sub-path sub-path-orange">
+          <strong style="font-size:11px;color:#e3b341;">LLM-Assisted Authoring</strong>
+          Natural language &rarr; LLM &rarr; Critics validate <code>.dmx</code> &rarr; SWE approves &rarr; Compile<br>
+          <span class="badge badge-orange">Optional LLM</span>
+        </div>
+      </div>
+
+      <!-- LEGACY -->
+      <div class="spec-mode mode-legacy">
+        <h4>Legacy Inputs</h4>
+        <p>
+          <strong>Markdown (.md)</strong> &mdash; LLM parsing + critics
+          <span class="badge badge-blue" style="font-size:7px;">LEGACY</span><br>
+          <strong>OpenAPI (.yaml)</strong> &mdash; Deterministic parser
+          <span class="badge badge-gray" style="font-size:7px;">LEGACY</span>
+        </p>
+      </div>
+
+      <div style="margin-top:8px;font-size:10px;color:#8b949e;line-height:1.5;">
+        Critics/arbiters validate the <em>spec</em> during authoring.<br>
+        They do NOT participate in compilation.
+      </div>
+    </div>
+  </div>
+
+  <!-- arrow -->
+  <div class="arrow-connector">
+    <svg viewBox="0 0 32 32"><polygon points="8,8 24,16 8,24" fill="#58a6ff" class="arrow-flow" style="animation-delay:0s"/></svg>
+  </div>
+
+  <!-- ───── STAGE 2: PARSING ───── -->
+  <div class="stage stage-2">
+    <div class="stage-icon">&#x26A1;</div>
+    <div class="stage-number">Stage 2</div>
+    <div class="stage-title">Parsing</div>
+    <div class="stage-body">
+      <div class="parse-route parse-dmx">
+        <strong>DMX Parser</strong>
+        Lark LALR(1) + 8 Validators &rarr; ApplicationIR
+      </div>
+      <div class="parse-route parse-md">
+        <strong>Markdown Parser</strong>
+        SpecParser + LLM &rarr; ApplicationIR
+      </div>
+      <div class="parse-route parse-oapi">
+        <strong>OpenAPI Parser</strong>
+        DirectOpenAPIParser &rarr; ApplicationIR
+      </div>
+      <div style="margin-top:10px;text-align:center;">
+        <div style="font-size:10px;color:#8b949e;opacity:0.7;">All paths produce</div>
+        <div style="font-size:14px;font-weight:700;color:#58a6ff;">ApplicationIR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- arrow to wall -->
+  <div class="arrow-connector">
+    <svg viewBox="0 0 32 32"><polygon points="8,8 24,16 8,24" fill="#e3b341" class="arrow-flow" style="animation-delay:0.4s"/></svg>
+  </div>
+
+  <!-- ───── STAGE 3: COMPILER WALL ───── -->
+  <div style="padding: 16px 0;">
+    <div class="compiler-wall"></div>
+    <div class="wall-label">COMPILER WALL</div>
+    <div class="wall-sub">Same IR &rarr; Same Code &rarr; Forever</div>
+  </div>
+
+  <!-- arrow from wall -->
+  <div class="arrow-connector">
+    <svg viewBox="0 0 32 32"><polygon points="8,8 24,16 8,24" fill="#e3b341" class="arrow-flow" style="animation-delay:0.8s"/></svg>
+  </div>
+
+  <!-- ───── STAGE 4: COGNITIVE PASSES ───── -->
+  <div class="stage stage-4">
+    <div class="stage-icon">&#x1F9E0;</div>
+    <div class="stage-number">Stage 4</div>
+    <div class="stage-title">Cognitive Passes</div>
+    <div class="stage-body">
+      <div style="text-align:center;margin:16px 0 10px;">
+        <div class="stat" style="color:#bc8cff;">100+</div>
+        <div class="stat-label">Passes</div>
+      </div>
+      <div style="text-align:center;margin-bottom:16px;">
+        <div class="stat" style="color:#bc8cff;font-size:18px;">16</div>
+        <div class="stat-label">Phases</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Function</div>
+        <div class="detail-value" style="font-size:11px;">Enrich, infer, resolve, validate the IR</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Guarantee</div>
+        <div class="detail-value" style="font-size:11px;color:#bc8cff;">Pure transforms on IR &mdash; no side effects</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- arrow -->
+  <div class="arrow-connector">
+    <svg viewBox="0 0 32 32"><polygon points="8,8 24,16 8,24" fill="#bc8cff" class="arrow-flow" style="animation-delay:1.2s"/></svg>
+  </div>
+
+  <!-- ───── STAGE 5: CODE GENERATION ───── -->
+  <div class="stage stage-5">
+    <div class="stage-icon">&#x2699;&#xFE0F;</div>
+    <div class="stage-number">Stage 5</div>
+    <div class="stage-title">Code Generation</div>
+    <div class="stage-body">
+      <div style="text-align:center;margin:16px 0 10px;">
+        <div class="stat" style="color:#3fb950;">200+</div>
+        <div class="stat-label">Emitters</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Role</div>
+        <div class="detail-value" style="font-size:11px;">Translators only &mdash; IR to code</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Targets</div>
+      </div>
+      <div class="target-chips">
+        <span class="chip">Python / FastAPI</span>
+        <span class="chip">Java / Spring Boot</span>
+        <span class="chip">React / Next.js</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- arrow -->
+  <div class="arrow-connector">
+    <svg viewBox="0 0 32 32"><polygon points="8,8 24,16 8,24" fill="#3fb950" class="arrow-flow" style="animation-delay:1.6s"/></svg>
+  </div>
+
+  <!-- ───── STAGE 6: QUALITY GATES ───── -->
+  <div class="stage stage-6">
+    <div class="stage-icon">&#x1F6E1;&#xFE0F;</div>
+    <div class="stage-number">Stage 6</div>
+    <div class="stage-title">Quality Gates</div>
+    <div class="stage-body">
+      <div style="text-align:center;margin:16px 0 10px;">
+        <div class="stat" style="color:#f85149;">119</div>
+        <div class="stat-label">Gates</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Enforcement</div>
+        <div class="detail-value" style="font-size:11px;">Invariant checks on IR + code</div>
+      </div>
+      <div style="margin-top:10px;">
+        <div class="detail-label" style="margin-bottom:4px;">Gate severity</div>
+        <div class="gate-bar gate-bar-red" style="width:100%;"></div>
+        <div style="font-size:9px;color:#f85149;margin-bottom:4px;">BLOCK &mdash; fatal violations</div>
+        <div class="gate-bar gate-bar-amber" style="width:70%;"></div>
+        <div style="font-size:9px;color:#e3b341;margin-bottom:4px;">WARN &mdash; advisories</div>
+        <div class="gate-bar gate-bar-green" style="width:40%;"></div>
+        <div style="font-size:9px;color:#3fb950;">INFO &mdash; telemetry</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- arrow -->
+  <div class="arrow-connector">
+    <svg viewBox="0 0 32 32"><polygon points="8,8 24,16 8,24" fill="#f85149" class="arrow-flow" style="animation-delay:2s"/></svg>
+  </div>
+
+  <!-- ───── STAGE 7: RUNNING PLATFORM ───── -->
+  <div class="stage stage-7 pulse">
+    <div class="stage-icon">&#x1F680;</div>
+    <div class="stage-number">Stage 7</div>
+    <div class="stage-title">Running Platform</div>
+    <div class="stage-body">
+      <ul class="output-list">
+        <li><span class="output-dot"></span> API Server (FastAPI / Spring)</li>
+        <li><span class="output-dot" style="animation-delay:0.3s"></span> Database + Migrations</li>
+        <li><span class="output-dot" style="animation-delay:0.6s"></span> Auth + Security Layer</li>
+        <li><span class="output-dot" style="animation-delay:0.9s"></span> Business Logic + Flows</li>
+        <li><span class="output-dot" style="animation-delay:1.2s"></span> Observability Stack</li>
+        <li><span class="output-dot" style="animation-delay:1.5s"></span> Docker + CI/CD</li>
+        <li><span class="output-dot" style="animation-delay:1.8s"></span> Test Suites (UTS / UPT)</li>
+        <li><span class="output-dot" style="animation-delay:2.1s"></span> Frontend (React / Next.js)</li>
+      </ul>
+      <div style="margin-top:12px;text-align:center;font-size:10px;color:#3fb950;font-weight:600;">
+        Production-ready &bull; A+ Grade
+      </div>
+    </div>
+  </div>
+
+</div><!-- /pipeline -->
+
+<!-- ═══════════════ BOTTOM INFO BAR ═══════════════ -->
+<div class="info-bar fade-in fade-in-d2">
+  <div class="info-item">
+    <strong>DMX:</strong> Write directly (zero LLM) or use LLM-assisted authoring with critics. Critics validate the <code>.dmx</code> <strong>spec</strong>, not the compiled code.
+  </div>
+  <div class="info-item">
+    <strong>Compiler Wall:</strong> 100% deterministic from parser onwards. Same IR in &rarr; same code out &rarr; forever. No heuristics, no fallbacks.
+  </div>
+  <div class="info-item">
+    <strong>Pipeline:</strong> 100+ cognitive passes &bull; 200+ emitters &bull; 119 quality gates &bull; 16 compilation phases
+  </div>
+</div>
+</div><!-- /diagram-content -->
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DMX Spec Language — DSL Reference</title>
+<meta name="description" content="DMX Deterministic Spec Language reference. 13 block types, 17+ data types, 12+ annotations for declaring complete software platforms.">
+<link rel="icon" type="image/svg+xml" href="../img/devmatrix-logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Nav (shared) ── */
+  .diagram-header { padding: 40px 0 0; }
+  .diagram-header-inner {
+    max-width: 880px; margin: 0 auto; padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .diagram-header-logo { display: block; height: 43px; width: auto; }
+  .diagram-nav { display: flex; align-items: center; gap: 24px; }
+  .diagram-nav a {
+    font-size: 0.8125rem; font-weight: 500; color: #4e4e5a;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .diagram-nav a:hover { color: #ececf1; }
+  .diagram-nav a.active { color: #0062ff; }
+  @media (max-width: 768px) {
+    .diagram-header-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .diagram-nav { flex-wrap: wrap; gap: 12px; }
+  }
+
+  /* ── Layout ── */
+  .content { max-width: 880px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* ── Title ── */
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff, #3fb950);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+  .page-subtitle {
+    text-align: center;
+    color: #8b949e;
+    font-size: 1rem;
+    margin-top: 6px;
+    font-weight: 400;
+  }
+  .page-meta {
+    text-align: center;
+    color: #484f58;
+    font-size: 0.8125rem;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Feature pills ── */
+  .feature-pills {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .pill {
+    background: rgba(88,166,255,0.08);
+    border: 1px solid rgba(88,166,255,0.2);
+    color: #58a6ff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Section ── */
+  .section { margin-top: 56px; }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Description card ── */
+  .desc-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+  .desc-card code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(88,166,255,0.1);
+    color: #58a6ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8125rem;
+  }
+
+  /* ── Code block ── */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .code-bar {
+    background: #161b22;
+    padding: 10px 20px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: #484f58;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-bar .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .code-bar .dot-r { background: #f85149; }
+  .code-bar .dot-y { background: #e3b341; }
+  .code-bar .dot-g { background: #3fb950; }
+  .code-body {
+    padding: 20px 24px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    color: #c9d1d9;
+  }
+  .code-body .kw { color: #58a6ff; }
+  .code-body .str { color: #3fb950; }
+  .code-body .ann { color: #bc8cff; }
+  .code-body .typ { color: #e3b341; }
+  .code-body .cm { color: #8b949e; font-style: italic; }
+  .code-body .dim { color: #484f58; }
+
+  /* ── Block grid ── */
+  .block-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 600px) {
+    .block-grid { grid-template-columns: 1fr; }
+  }
+  .block-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .block-card:hover {
+    border-color: rgba(88,166,255,0.3);
+    background: #1c2333;
+  }
+  .block-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 1px; }
+  .block-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #58a6ff;
+  }
+  .block-desc {
+    font-size: 0.8125rem;
+    color: #8b949e;
+    margin-top: 2px;
+  }
+
+  /* ── Table ── */
+  .type-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  .type-table th {
+    text-align: left;
+    font-weight: 600;
+    color: #8b949e;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 10px 16px;
+    border-bottom: 1px solid #30363d;
+  }
+  .type-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+  }
+  .type-table tr:last-child td { border-bottom: none; }
+  .type-table .t-name {
+    font-family: 'JetBrains Mono', monospace;
+    color: #e3b341;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  .type-table .t-example {
+    font-family: 'JetBrains Mono', monospace;
+    color: #8b949e;
+    font-size: 0.8125rem;
+  }
+  .table-wrap {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* ── Annotation pills ── */
+  .ann-group-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+  .ann-group-title:first-child { margin-top: 0; }
+  .ann-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ann-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #bc8cff;
+    background: rgba(188,140,255,0.08);
+    border: 1px solid rgba(188,140,255,0.2);
+    padding: 5px 12px;
+    border-radius: 6px;
+  }
+
+  /* ── Target cards ── */
+  .target-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 600px) {
+    .target-grid { grid-template-columns: 1fr; }
+  }
+  .target-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .target-card:hover {
+    border-color: rgba(88,166,255,0.3);
+    background: #1c2333;
+  }
+  .target-icon { font-size: 1.75rem; margin-bottom: 8px; }
+  .target-name { font-size: 0.875rem; font-weight: 600; color: #e6edf3; }
+  .target-stack {
+    font-size: 0.75rem;
+    color: #8b949e;
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Footer note ── */
+  .footer-note {
+    margin-top: 56px;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: #484f58;
+    padding: 24px 0;
+    border-top: 1px solid #30363d;
+    line-height: 1.7;
+  }
+  .footer-note strong { color: #8b949e; }
+
+  /* ── Fade-in animations ── */
+  .fade-in { animation: fadeIn 0.8s ease-out both; }
+  .fade-in-d1 { animation-delay: 0.1s; }
+  .fade-in-d2 { animation-delay: 0.2s; }
+  .fade-in-d3 { animation-delay: 0.35s; }
+  .fade-in-d4 { animation-delay: 0.5s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header class="diagram-header">
+  <div class="diagram-header-inner">
+    <a href="../index.html"><img src="../img/devmatrix-logo-full_1.svg" alt="DevMatrix" class="diagram-header-logo"></a>
+    <nav class="diagram-nav">
+      <a href="../index.html">Home</a>
+      <a href="dsl-reference.html" class="active">DSL</a>
+      <a href="00-end-to-end-flow.html">Pipeline</a>
+      <a href="06-critics-arbitration-system.html">Critics</a>
+      <a href="../docs/DMX_Breaking_The_Compiler_Wall.pdf">Whitepaper</a>
+    </nav>
+  </div>
+</header>
+
+<div class="content">
+
+  <!-- Title -->
+  <h1 class="page-title fade-in">DMX Spec Language</h1>
+  <p class="page-subtitle">Deterministic Specification Language</p>
+  <p class="page-meta">Version 0.2.1 &middot; .dmx &middot; Lark LALR(1) Parser</p>
+
+  <div class="feature-pills fade-in fade-in-d1">
+    <span class="pill">13 Block Types</span>
+    <span class="pill">17+ Data Types</span>
+    <span class="pill">12+ Annotations</span>
+    <span class="pill">Deterministic Compilation</span>
+  </div>
+
+  <!-- What is DMX? -->
+  <div class="section fade-in fade-in-d2">
+    <h2 class="section-title">What is DMX?</h2>
+    <div class="desc-card">
+      DMX is a purpose-built specification language for declaring complete software platforms. One <code>.dmx</code> file describes entities, APIs, business flows, state machines, security policies, and infrastructure &mdash; the compiler handles the rest. Write directly (zero LLM) or use LLM-assisted authoring with critic validation.
+    </div>
+  </div>
+
+  <!-- At a Glance -->
+  <div class="section fade-in fade-in-d3">
+    <h2 class="section-title">At a Glance</h2>
+    <div class="code-block">
+      <div class="code-bar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        hip_patient.dmx
+      </div>
+      <pre class="code-body"><span class="kw">service</span> <span class="str">"hip_patient"</span> {
+  version    = <span class="str">"1.0.0"</span>
+  port       = <span class="typ">8002</span>
+  api_prefix = <span class="str">"/v1"</span>
+  database   = <span class="str">"hip_patient_db"</span>
+
+  <span class="kw">compliance</span> [<span class="str">"HIPAA"</span>, <span class="str">"SOC2"</span>]
+
+  <span class="kw">depends_on</span> {
+    hip_identity <span class="kw">imports</span> [<span class="typ">Workspace</span>]
+  }
+}
+
+<span class="kw">entity</span> <span class="typ">Patient</span> {
+  <span class="ann">@aggregate_root</span>
+  <span class="ann">@tenancy</span>(workspace, workspace_id)
+  <span class="ann">@soft_delete</span>
+
+  id           <span class="typ">UUID</span>        <span class="ann">@pk</span> <span class="ann">@default</span>($computed.uuid)
+  workspace_id <span class="typ">UUID</span>        <span class="ann">@fk</span>(<span class="typ">Workspace</span>.id) <span class="ann">@not_null</span>
+  first_name   <span class="typ">String</span>(100) <span class="ann">@not_null</span>
+  last_name    <span class="typ">String</span>(100) <span class="ann">@not_null</span>
+  email        <span class="typ">String</span>(255) <span class="ann">@unique</span> <span class="ann">@sensitive</span>
+  status       <span class="typ">Enum</span>(ACTIVE, INACTIVE) <span class="ann">@default</span>(<span class="str">"ACTIVE"</span>)
+  created_at   <span class="typ">DateTime</span>    <span class="ann">@default</span>($computed.now)
+}
+
+<span class="kw">api</span> {
+  <span class="kw">POST</span> <span class="str">"/patients"</span> {
+    permissions = [<span class="str">"patients:write"</span>]
+    <span class="kw">request</span> {
+      first_name <span class="typ">String</span>(100) <span class="ann">@required</span>
+      last_name  <span class="typ">String</span>(100) <span class="ann">@required</span>
+      email      <span class="typ">String</span>(255)
+    }
+    <span class="kw">response</span> <span class="ann">@entity</span>(<span class="typ">Patient</span>) <span class="ann">@status</span>(<span class="typ">201</span>)
+  }
+
+  <span class="kw">GET</span> <span class="str">"/patients"</span> {
+    permissions = [<span class="str">"patients:read"</span>]
+    <span class="kw">response</span> <span class="ann">@paginated</span>(<span class="typ">Patient</span>)
+  }
+}</pre>
+    </div>
+  </div>
+
+  <!-- Top-Level Blocks -->
+  <div class="section fade-in fade-in-d4">
+    <h2 class="section-title">Top-Level Blocks</h2>
+    <div class="block-grid">
+      <div class="block-card">
+        <span class="block-icon">&#x1F4CB;</span>
+        <div><div class="block-name">service</div><div class="block-desc">Module identity, config, dependencies</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x1F4E6;</span>
+        <div><div class="block-name">entity</div><div class="block-desc">Domain entities with typed fields &amp; constraints</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x1F50C;</span>
+        <div><div class="block-name">api</div><div class="block-desc">HTTP &amp; WebSocket endpoints</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x26A1;</span>
+        <div><div class="block-name">flow</div><div class="block-desc">Multi-step business workflows</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x1F504;</span>
+        <div><div class="block-name">state_machine</div><div class="block-desc">State transitions with guards &amp; roles</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x2705;</span>
+        <div><div class="block-name">validations</div><div class="block-desc">Cross-field &amp; cross-entity rules</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x1F512;</span>
+        <div><div class="block-name">security</div><div class="block-desc">RBAC policies &amp; data access rules</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x26A0;&#xFE0F;</span>
+        <div><div class="block-name">errors</div><div class="block-desc">Domain error catalog</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x23F0;</span>
+        <div><div class="block-name">jobs</div><div class="block-desc">Scheduled &amp; background tasks</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x1F514;</span>
+        <div><div class="block-name">notifications</div><div class="block-desc">Event-driven messaging</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x1F4C1;</span>
+        <div><div class="block-name">file_storage</div><div class="block-desc">File upload &amp; storage config</div></div>
+      </div>
+      <div class="block-card">
+        <span class="block-icon">&#x1F3D7;&#xFE0F;</span>
+        <div><div class="block-name">infrastructure</div><div class="block-desc">Docker, Kong, Redis, PostGIS</div></div>
+      </div>
+      <div class="block-card" style="grid-column: span 2;">
+        <span class="block-icon">&#x1F310;</span>
+        <div><div class="block-name">platform</div><div class="block-desc">Multi-service manifest &mdash; orchestrates all services</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Type System -->
+  <div class="section">
+    <h2 class="section-title">Type System</h2>
+    <div class="table-wrap">
+      <table class="type-table">
+        <thead>
+          <tr><th>Type</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="t-name">UUID</td><td class="t-example">id UUID @pk</td></tr>
+          <tr><td class="t-name">String</td><td class="t-example">name String</td></tr>
+          <tr><td class="t-name">String(N)</td><td class="t-example">email String(255)</td></tr>
+          <tr><td class="t-name">Text</td><td class="t-example">bio Text</td></tr>
+          <tr><td class="t-name">Integer</td><td class="t-example">age Integer</td></tr>
+          <tr><td class="t-name">Float</td><td class="t-example">score Float</td></tr>
+          <tr><td class="t-name">Decimal</td><td class="t-example">price Decimal</td></tr>
+          <tr><td class="t-name">Boolean</td><td class="t-example">active Boolean</td></tr>
+          <tr><td class="t-name">Date</td><td class="t-example">birth_date Date</td></tr>
+          <tr><td class="t-name">DateTime</td><td class="t-example">created_at DateTime</td></tr>
+          <tr><td class="t-name">JSON</td><td class="t-example">metadata JSON</td></tr>
+          <tr><td class="t-name">Enum(...)</td><td class="t-example">status Enum(ACTIVE, INACTIVE)</td></tr>
+          <tr><td class="t-name">Array(T)</td><td class="t-example">tags Array(String)</td></tr>
+          <tr><td class="t-name">Point(SRID)</td><td class="t-example">location Point(4326)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Annotations -->
+  <div class="section">
+    <h2 class="section-title">Annotations</h2>
+    <div class="desc-card">
+      <div class="ann-group-title">Field-level</div>
+      <div class="ann-pills">
+        <span class="ann-pill">@pk</span>
+        <span class="ann-pill">@fk</span>
+        <span class="ann-pill">@not_null</span>
+        <span class="ann-pill">@unique</span>
+        <span class="ann-pill">@default</span>
+        <span class="ann-pill">@sensitive</span>
+        <span class="ann-pill">@computed</span>
+        <span class="ann-pill">@immutable</span>
+        <span class="ann-pill">@indexed</span>
+        <span class="ann-pill">@check</span>
+      </div>
+      <div class="ann-group-title">Entity-level</div>
+      <div class="ann-pills">
+        <span class="ann-pill">@aggregate_root</span>
+        <span class="ann-pill">@tenancy</span>
+        <span class="ann-pill">@soft_delete</span>
+        <span class="ann-pill">@audit</span>
+        <span class="ann-pill">@unique_together</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compilation Targets -->
+  <div class="section">
+    <h2 class="section-title">Compilation Targets</h2>
+    <div class="target-grid">
+      <div class="target-card">
+        <div class="target-icon">&#x1F40D;</div>
+        <div class="target-name">Python</div>
+        <div class="target-stack">FastAPI + SQLAlchemy</div>
+      </div>
+      <div class="target-card">
+        <div class="target-icon">&#x2615;</div>
+        <div class="target-name">Java</div>
+        <div class="target-stack">Spring Boot + JPA</div>
+      </div>
+      <div class="target-card">
+        <div class="target-icon">&#x1F433;</div>
+        <div class="target-name">Infrastructure</div>
+        <div class="target-stack">Docker + Kong + Redis</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <div class="footer-note">
+    <strong>DMX is not a programming language</strong> &mdash; it's a specification language.<br>
+    It declares <em>what</em>, not <em>how</em>. The compiler handles the rest.
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
     <title>DMX — Breaking the Compiler Wall</title>
     <meta name="description" content="DMX is a cognitive compiler that transforms natural language specifications into deterministic, verifiable, production-ready software platforms. Patent pending.">
 
-    <link rel="icon" type="image/svg+xml" href="/devmatrix-logo.svg">
+    <link rel="icon" type="image/svg+xml" href="img/devmatrix-logo.svg">
 
     <meta property="og:title" content="DMX — Breaking the Compiler Wall">
     <meta property="og:description" content="The infrastructure layer between AI intelligence and enterprise trust. Deterministic compilation for AI-generated systems.">
@@ -76,8 +76,18 @@
 
         /* === Header === */
         .header { padding: 40px 0 0; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; }
         .logo-wrap { display: flex; align-items: center; gap: 14px; }
         .logo-icon { display: block; width: 40px; height: 40px; }
+        .logo-full { display: block; height: 43px; width: auto; }
+
+        /* === Nav === */
+        .nav { display: flex; align-items: center; gap: 24px; }
+        .nav-link {
+            font-size: 0.8125rem; font-weight: 500; color: var(--text-dim);
+            text-decoration: none; transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--text); }
         .logo-text { font-size: 1.625rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
         .logo-text .l-blue { color: #0375f7; }
         .logo-text .l-white { color: #ffffff; }
@@ -154,7 +164,7 @@
 
         .section-heading {
             font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
-            margin-bottom: 32px; line-height: 1.3;
+            margin-bottom: 32px; line-height: 1.3; max-width: 680px;
         }
 
         .section-text {
@@ -288,6 +298,7 @@
             color: var(--text-dim);
             line-height: 1.7;
             margin-top: 20px;
+            max-width: 620px;
             max-width: 620px;
         }
 
@@ -524,9 +535,44 @@
             color: var(--text-dim);
         }
 
+        /* === Diagram link cards === */
+        .diagram-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+
+        .diagram-card {
+            display: block; padding: 28px 24px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; text-decoration: none;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+            position: relative; overflow: hidden;
+        }
+        .diagram-card:hover {
+            border-color: var(--border-hover); transform: translateY(-2px);
+            box-shadow: 0 8px 32px -8px rgba(0,98,255,0.15);
+        }
+        .diagram-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--blue), transparent); opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .diagram-card:hover::before { opacity: 0.6; }
+
+        .diagram-card-icon { font-size: 2rem; margin-bottom: 12px; }
+        .diagram-card-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+        .diagram-card-desc { font-size: 0.8125rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
+        .diagram-card-action {
+            font-size: 0.75rem; font-weight: 600; color: var(--blue);
+            text-transform: uppercase; letter-spacing: 0.08em;
+        }
+
+        @media (max-width: 640px) {
+            .diagram-cards { grid-template-columns: 1fr; }
+        }
+
         /* === Responsive === */
         @media (max-width: 768px) {
             .container { padding: 0 20px; }
+            .header-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .nav { flex-wrap: wrap; gap: 12px; }
             .hero { padding: 64px 0 56px; }
             .hero-title { font-size: 1.75rem; }
             .hero-sub { font-size: 1rem; }
@@ -557,9 +603,16 @@
     <div class="page">
         <header class="header">
             <div class="container">
-                <div class="logo-wrap">
-                    <img src="/dmx-logo.svg" alt="" class="logo-icon">
-                    <span class="logo-text"><span class="l-blue">D</span><span class="l-white">M</span><span class="l-blue">X</span></span>
+                <div class="header-inner">
+                    <a href="index.html">
+                        <img src="img/devmatrix-logo-full_1.svg" alt="DevMatrix" class="logo-full">
+                    </a>
+                    <nav class="nav">
+                        <a href="diagrams/dsl-reference.html" class="nav-link">DSL</a>
+                        <a href="diagrams/00-end-to-end-flow.html" class="nav-link">Pipeline</a>
+                        <a href="diagrams/06-critics-arbitration-system.html" class="nav-link">Critics</a>
+                        <a href="docs/DMX_Breaking_The_Compiler_Wall.pdf" class="nav-link">Whitepaper</a>
+                    </nav>
                 </div>
             </div>
         </header>
@@ -575,10 +628,14 @@
                     </h1>
                     <p class="hero-sub fade-in fade-in-d1">DMX is a cognitive compiler that transforms natural language specifications into complete, production-ready software platforms through deterministic compilation.</p>
                     <div class="diagram-wrapper fade-in fade-in-d2" style="margin-top: 40px;">
-                        <img src="/compiler-wall-diagram.png" alt="The Compiler Wall: the architectural boundary between probabilistic AI intelligence and deterministic infrastructure">
+                        <img src="img/compiler-wall-diagram.png" alt="The Compiler Wall: the architectural boundary between probabilistic AI intelligence and deterministic infrastructure">
                     </div>
                     <div class="hero-actions fade-in fade-in-d3">
-                        <a href="/DMX_Breaking_The_Compiler_Wall.pdf" class="btn btn--primary">
+                        <a href="diagrams/dsl-reference.html" class="btn btn--primary">
+                            Explore the DSL
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
+                        </a>
+                        <a href="docs/DMX_Breaking_The_Compiler_Wall.pdf" class="btn btn--ghost">
                             Read the whitepaper
                             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                         </a>
@@ -630,7 +687,7 @@
                         <div class="step">
                             <div class="step-number">01</div>
                             <div class="step-title">Specification</div>
-                            <div class="step-desc">A natural language specification describes the system: entities, relationships, business rules, access control, state machines.</div>
+                            <div class="step-desc">A <a href="diagrams/dsl-reference.html" style="color:#58a6ff;text-decoration:none;">.dmx specification</a> declares the system: entities, APIs, business flows, state machines, security policies. Write directly or use LLM-assisted authoring.</div>
                             <div class="step-cost">Input: human intent</div>
                         </div>
                         <div class="step">
@@ -654,6 +711,26 @@
                     </div>
                 </div>
 
+                <!-- Interactive Diagrams -->
+                <div class="section">
+                    <div class="section-label">Interactive Architecture</div>
+                    <h2 class="section-heading">Explore the full compilation pipeline and spec closure system.</h2>
+                    <div class="diagram-cards">
+                        <a href="diagrams/00-end-to-end-flow.html" class="diagram-card">
+                            <div class="diagram-card-icon">&#x1F680;</div>
+                            <div class="diagram-card-title">End-to-End Pipeline</div>
+                            <div class="diagram-card-desc">From spec authoring to running platform. 7 stages: parsing, compiler wall, 100+ cognitive passes, 200+ emitters, 119 quality gates.</div>
+                            <div class="diagram-card-action">Open interactive diagram &rarr;</div>
+                        </a>
+                        <a href="diagrams/06-critics-arbitration-system.html" class="diagram-card">
+                            <div class="diagram-card-icon">&#x1F6E1;&#xFE0F;</div>
+                            <div class="diagram-card-title">Spec Closure System</div>
+                            <div class="diagram-card-desc">3 LLM agents, 12 SCC rules, 5 objective checks. &ge;95% closure score. Critics validate specs before compilation.</div>
+                            <div class="diagram-card-action">Open interactive diagram &rarr;</div>
+                        </a>
+                    </div>
+                </div>
+
                 <!-- What DMX Produces -->
                 <div class="section">
                     <div class="section-label">What DMX Compiles</div>
@@ -666,7 +743,7 @@
                             <div class="stat-source">100.0%</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-value stat-value--green">12</div>
+                            <div class="stat-value stat-value--green">17</div>
                             <div class="stat-label">Microservices compiled</div>
                             <div class="stat-source">Single specification</div>
                         </div>
@@ -684,7 +761,7 @@
 
                     <div class="stats stats--4" style="margin-top: 16px;">
                         <div class="stat">
-                            <div class="stat-value stat-value--blue">380K+</div>
+                            <div class="stat-value stat-value--blue">712K+</div>
                             <div class="stat-label">Lines of code generated</div>
                         </div>
                         <div class="stat">
@@ -697,11 +774,34 @@
                         </div>
                         <div class="stat">
                             <div class="stat-value stat-value--blue">&lt;5 min</div>
-                            <div class="stat-label">Compiler engine, 12 microservices</div>
+                            <div class="stat-label">Compiler engine, 17 microservices</div>
                         </div>
                     </div>
 
-                    <p class="section-text" style="margin-top: 32px;">Backend services, API contracts, database schemas, infrastructure definitions, security configurations, test matrices, compliance artifacts. All from one specification. In deployment with enterprise clients.</p>
+                    <div class="stats stats--4" style="margin-top: 16px;">
+                        <div class="stat">
+                            <div class="stat-value stat-value--green">38,342</div>
+                            <div class="stat-label">Tests generated &amp; passed</div>
+                            <div class="stat-source">0 failures</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value stat-value--green">119</div>
+                            <div class="stat-label">Quality gates</div>
+                            <div class="stat-source">1,036 of 1,037 passed</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value stat-value--green">100+</div>
+                            <div class="stat-label">Cognitive passes</div>
+                            <div class="stat-source">16 compilation phases</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value stat-value--green">200+</div>
+                            <div class="stat-label">Code emitters</div>
+                            <div class="stat-source">Per target language</div>
+                        </div>
+                    </div>
+
+                    <p class="section-text" style="margin-top: 32px;">Backend services, API contracts, database schemas, infrastructure definitions, security configurations, test matrices, compliance artifacts. All from one specification. Healthcare platform with 17 microservices, approaching production.</p>
 
                     <div class="agnostic">
                         <div class="agnostic-headline">Specification-agnostic. Domain-agnostic. By architecture.</div>
@@ -722,12 +822,12 @@
                 <div class="section">
                     <div class="section-label">The Economics</div>
                     <h2 class="section-heading">First compilation: ~$4 per module in LLM tokens.<br>Every recompilation after that: $0. Forever.</h2>
-                    <p class="section-text">The IR is cached, cryptographically sealed, and reusable. A 12-microservice platform costs ~$48 in LLM tokens to create once, then recompiles infinite times at zero marginal cost. Current AI coding tools require a full LLM round-trip for every generation. DMX inverts the economics.</p>
+                    <p class="section-text">The IR is cached, cryptographically sealed, and reusable. A 17-microservice platform costs ~$68 in LLM tokens to create once, then recompiles infinite times at zero marginal cost. Current AI coding tools require a full LLM round-trip for every generation. DMX inverts the economics.</p>
 
                     <div class="stats stats--4" style="margin-top: 32px;">
                         <div class="stat">
-                            <div class="stat-value stat-value--blue">~$48</div>
-                            <div class="stat-label">Total LLM cost for 12 microservices</div>
+                            <div class="stat-value stat-value--blue">~$68</div>
+                            <div class="stat-label">Total LLM cost for 17 microservices</div>
                             <div class="stat-source">One-time, then $0</div>
                         </div>
                         <div class="stat">
@@ -780,7 +880,7 @@
                             </tr>
                             <tr>
                                 <td>Verification gates</td>
-                                <td class="check">All passed, zero failures</td>
+                                <td class="check">119 gates, 1,036/1,037 passed</td>
                                 <td class="cross">None</td>
                             </tr>
                             <tr>
@@ -847,14 +947,12 @@
                     <p class="section-text">DMX generates the evidence auditors require: threat models, access control matrices, SBOM validation, deterministic build logs, and provenance chains. Every verification gate maps to compliance controls.</p>
 
                     <div class="frameworks">
-                        <span class="framework-tag">SOC 2</span>
-                        <span class="framework-tag">HIPAA</span>
-                        <span class="framework-tag">ISO 27001</span>
-                        <span class="framework-tag">GDPR</span>
-                        <span class="framework-tag">PCI DSS</span>
-                        <span class="framework-tag">FedRAMP</span>
-                        <span class="framework-tag">NIST 800-53</span>
-                        <span class="framework-tag">SLSA</span>
+                        <span class="framework-tag">OWASP Top 10 &mdash; Validated</span>
+                        <span class="framework-tag">SOC 2 Type II &mdash; Validated</span>
+                        <span class="framework-tag">HIPAA &mdash; Validated</span>
+                        <span class="framework-tag">PCI DSS v4.0 &mdash; Validated</span>
+                        <span class="framework-tag">GDPR &mdash; Validated</span>
+                        <span class="framework-tag">ISO 27001:2022 &mdash; Validated</span>
                     </div>
 
                     <p class="enterprise-text">DMX does not claim external certification. It generates the structural artifacts and evidence packs that map to these frameworks, reducing the gap between compiled output and regulatory requirements.</p>
@@ -863,7 +961,7 @@
                 <!-- Whitepaper -->
                 <div class="section">
                     <div class="section-label">Full Technical Paper</div>
-                    <a href="/DMX_Breaking_The_Compiler_Wall.pdf" class="paper-cta">
+                    <a href="docs/DMX_Breaking_The_Compiler_Wall.pdf" class="paper-cta">
                         <div class="paper-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l7 7v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><polyline points="14 2 14 9 21 9"/></svg>
                         </div>
@@ -901,7 +999,7 @@
                             </a>
                         </li>
                         <li class="evidence-item">
-                            <a href="/DMX_Breaking_The_Compiler_Wall.pdf" class="evidence-link">
+                            <a href="docs/DMX_Breaking_The_Compiler_Wall.pdf" class="evidence-link">
                                 <span>Full technical whitepaper <span style="color:var(--text-dim); font-size:0.8125rem">&mdash; architecture, benchmarks, security analysis, and compilation economics</span></span>
                                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg>
                             </a>
@@ -925,7 +1023,9 @@
         <footer class="footer">
             <div class="container">
                 <p class="footer-text">
-                    <a href="/DMX_Breaking_The_Compiler_Wall.pdf">Whitepaper</a> &nbsp;&middot;&nbsp;
+                    <a href="docs/DMX_Breaking_The_Compiler_Wall.pdf">Whitepaper</a> &nbsp;&middot;&nbsp;
+                    <a href="diagrams/00-end-to-end-flow.html">Pipeline</a> &nbsp;&middot;&nbsp;
+                    <a href="diagrams/06-critics-arbitration-system.html">Critics</a> &nbsp;&middot;&nbsp;
                     <a href="https://github.com/devmatrix-ai/devmatrix-public">Verification Repository</a> &nbsp;&middot;&nbsp;
                     <a href="https://github.com/devmatrix-ai">GitHub</a>
                 </p>
